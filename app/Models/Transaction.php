@@ -1,0 +1,3 @@
+<?php
+namespace App\Models; use Illuminate\Database\Eloquent\Model;
+class Transaction extends Model {protected $fillable=['user_id','warehouse_id','status']; public function user(){return $this->belongsTo(User::class);} public function warehouse(){return $this->belongsTo(Warehouse::class);} public function items(){return $this->hasMany(TransactionItem::class);} public function anomaly(){return $this->hasOne(Anomaly::class);} public function visionEvents(){return $this->hasMany(VisionEvent::class);} public function scanEvents(){return $this->hasMany(ScanEvent::class);} public function auditLogs(){return $this->hasMany(AuditLog::class)->orderBy('created_at');}}

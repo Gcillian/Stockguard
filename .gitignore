@@ -1,0 +1,21 @@
+.env
+.env.*
+!.env.example
+/auth.json
+/vendor/
+/node_modules/
+/storage/*.key
+/storage/framework/cache/data/
+/storage/framework/sessions/
+/storage/framework/testing/
+/storage/framework/views/
+/storage/logs/
+/storage/app/evidence/
+/bootstrap/cache/*.php
+/.phpunit.result.cache
+/public/hot
+/public/storage
+
+# Keep the local static checkpoint demo asset under version control.
+!/storage/app/demo/
+!/storage/app/demo/4boxdetected.jpeg

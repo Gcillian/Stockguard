@@ -1,0 +1,51 @@
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.products-page{background:#eee;color:#141d22}
+.products-page .main{padding:21px 13px 25px 0;display:flex;flex-direction:column;min-height:100vh;max-width:none}
+.products-page .topbar{height:37px;min-height:37px;border:0;border-radius:10px;padding:0 13px;box-shadow:none;font-size:8px;color:#74818a}
+.products-page .breadcrumb span{margin:0 6px}.products-page .breadcrumb strong{font-weight:600;color:#566971}
+.products-page .topbar-meta{font-size:6px;gap:62px}.products-page .topbar-meta i{display:none}.products-page .topbar-meta>span{color:#2d7a8a}.products-page .topbar-meta time{font-size:8px}
+.products-page .head{margin:26px 0 20px;display:block}
+.products-page .head h1{font-size:18px;letter-spacing:-.045em}
+.products-page .head p{font-size:8px;margin-top:7px;color:#737f85}
+.products-page .inventory-panel{margin:0;padding:0;border:0;border-radius:14px;box-shadow:none;overflow:hidden}
+.inventory-toolbar{min-height:55px;display:flex;align-items:center;justify-content:space-between;padding:11px 16px;gap:14px}
+.inventory-title{display:flex;align-items:center;gap:17px;white-space:nowrap}
+.products-page .inventory-title h2{font-size:14px;margin:0;letter-spacing:-.035em}
+.products-page .count-pill{border-radius:4px;background:#edf0f0;color:#636e72;font:7px Manrope,sans-serif;padding:5px 10px}
+.inventory-actions{display:flex;align-items:center;gap:6px;min-width:0}
+.inventory-actions form{position:relative;width:217px;max-width:32vw}
+.inventory-actions input{height:27px;width:100%;background:#f6f7f7;border:1px solid #e5e9e9;border-radius:5px;padding:0 24px 0 8px;font-size:7px;color:#25343b}
+.inventory-actions input:focus{outline:2px solid #aad9de}
+.inventory-actions input::placeholder{color:#39474e;opacity:1}
+.inventory-actions form button{position:absolute;right:5px;top:3px;border:0;background:transparent;color:#788c93;font-size:15px;cursor:pointer;line-height:20px}
+.inventory-add{height:27px;border:1px solid #d5e7e9;border-radius:5px;background:#e4f4f5;color:#225f6d;font-size:7px;font-weight:700;padding:0 8px;cursor:pointer;white-space:nowrap}
+.inventory-add:hover{background:#bce7e9}
+.search-summary{font-size:8px;color:#60747d;padding:3px 16px 9px}.search-summary a{margin-left:8px;font-weight:700}
+.inventory-table{min-width:680px;table-layout:fixed;font-size:8px}
+.inventory-table th:nth-child(1){width:19%}.inventory-table th:nth-child(2){width:19%}.inventory-table th:nth-child(3){width:14%}.inventory-table th:nth-child(4){width:15%}.inventory-table th:nth-child(5){width:18%}.inventory-table th:nth-child(6){width:10%}.inventory-table th:nth-child(7){width:5%}
+.products-page .inventory-table th{padding:10px 10px 12px;color:#5e6c74;font:6px Manrope,sans-serif;text-align:left;border-bottom:1px solid #e7ebed;letter-spacing:0}
+.products-page .inventory-table th:first-child,.products-page .inventory-table td:first-child{padding-left:16px}
+.products-page .inventory-table td{height:62px;padding:10px;white-space:nowrap;border-bottom:1px solid #e9edee;color:#16242c;font-size:8px}
+.products-page .inventory-table tr:last-child td{border-bottom:0}
+.inventory-product{display:flex;align-items:center;gap:15px;min-width:0}
+.inventory-cube{width:33px;height:33px;border-radius:6px;display:grid;place-items:center;flex:none}
+.inventory-cube svg{width:16px;height:16px}
+.inventory-cube.peach{background:#f6e8e0;color:#c58861}.inventory-cube.blue{background:#e2f1f8;color:#63a2c0}.inventory-cube.yellow{background:#f7f1d3;color:#bda92f}.inventory-cube.green{background:#e7f1e1;color:#7ba275}.inventory-cube.gray{background:#edf0f0;color:#8b9494}
+.product-name{border:0;background:transparent;color:#18252c;padding:0;font-size:8px;cursor:pointer;text-align:left;overflow:hidden;text-overflow:ellipsis}
+.product-name:hover{text-decoration:underline}
+.sku-line{display:block;overflow:hidden;text-overflow:ellipsis}
+.inventory-transaction{color:#17242b;text-decoration:none}.inventory-transaction:hover{text-decoration:underline}
+.manual-label,.quantity-none{color:#a1aaae}
+.quantity-badge{min-width:29px;display:inline-block;text-align:center;border-radius:20px;padding:5px 6px;color:#fff;font-size:8px;font-weight:800;line-height:1}
+.quantity-badge.positive{background:#35c65a;color:#052d11}.quantity-badge.negative{background:#b90909;color:#fff}
+.inventory-stock{font-size:18px;font-weight:600;letter-spacing:-.06em}.inventory-unit{font-size:8px;color:#707b82;margin-left:5px}
+.inventory-edit{border:0;background:transparent;color:#6e8992;font-size:16px;cursor:pointer;opacity:.65}.inventory-edit:hover{opacity:1;color:#0b5264}
+.inventory-empty{height:100px!important;text-align:center;color:#71848e!important}
+.products-page .pagination{padding:0 16px 14px;margin:0}
+.inventory-note{font-size:8px;color:#6b777d;margin:12px 2px 0}
+.inventory-footer{display:flex;justify-content:space-between;margin-top:auto;padding-top:35px;color:#717e83;font-size:6px;letter-spacing:.03em}
+.products-page .inventory-dialog{border-radius:12px;padding:22px;width:min(400px,calc(100% - 24px))}
+.products-page .inventory-dialog h3{font-size:18px}
+.products-page .inventory-dialog .label{font-size:9px}
+.products-page .inventory-dialog .btn{font-size:10px}
+@media(max-width:720px){.products-page .main{padding:12px 10px 20px 0}.products-page .topbar-meta{gap:0}.products-page .topbar-meta>span{display:none}.products-page .head{margin:22px 0 18px}.inventory-toolbar{align-items:flex-start;flex-direction:column;gap:9px}.inventory-actions{width:100%}.inventory-actions form{width:100%;max-width:none}.inventory-note{line-height:1.5}.inventory-footer{gap:10px}}

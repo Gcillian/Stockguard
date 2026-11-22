@@ -1,0 +1,3 @@
+<?php
+namespace App\Models; use Illuminate\Database\Eloquent\Model;
+class Product extends Model {protected $fillable=['sku','barcode','name','stock']; protected $casts=['stock'=>'integer']; public function transactionItems(){return $this->hasMany(TransactionItem::class);} public function stockMovements(){return $this->hasMany(StockMovement::class);} public function latestStockMovement(){return $this->hasOne(StockMovement::class)->latestOfMany();} public function stockAdjustments(){return $this->hasMany(StockAdjustment::class);} public function latestStockAdjustment(){return $this->hasOne(StockAdjustment::class)->latestOfMany();}}

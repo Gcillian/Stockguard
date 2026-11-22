@@ -1,0 +1,1 @@
+<?php return ['mailers'=>['log'=>['transport'=>'log'],'array'=>['transport'=>'array']],'default'=>env('MAIL_MAILER','log'),'from'=>['address'=>env('MAIL_FROM_ADDRESS','hello@stockguard.id'),'name'=>env('MAIL_FROM_NAME','Stockguard')]];
