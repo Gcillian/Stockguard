@@ -15,8 +15,8 @@ Password default    : kosong (sesuaikan dengan konfigurasi MySQL)
 
 Konfigurasi berada di file laravel-app/.env.
 
-2. ATURAN UMUM FIELD
----------------------
+CATATAN FIELD UMUM
+-----------------
 - id: primary key otomatis (big integer).
 - *_id: foreign key yang menunjuk ke id pada tabel lain.
 - created_at dan updated_at: waktu pembuatan dan perubahan data Laravel.
@@ -24,6 +24,28 @@ Konfigurasi berada di file laravel-app/.env.
 - unique: nilai tidak boleh sama dengan record lain.
 - cascadeOnDelete: data anak ikut dihapus jika data induk dihapus.
 - cascadeOnUpdate: perubahan id induk diteruskan ke data anak.
+
+2. RINGKASAN TABEL UTAMA
+-------------------------
+No.  Nama tabel           Fungsi
+---  -------------------  -----------------------------------------------
+01   users                Akun Staff, Supervisor, dan Admin.
+02   warehouses           Data gudang.
+03   products             Master produk, SKU, barcode, dan stok.
+04   cameras              Kamera checkpoint gudang.
+05   transactions         Permintaan pengambilan barang.
+06   transaction_items    Produk dan jumlah box dalam transaksi.
+07   scan_events          Riwayat scan SKU/barcode.
+08   vision_events        Hasil deteksi kamera atau YOLO.
+09   anomalies            Transaksi yang memerlukan pending review.
+10   stock_movements      Perubahan stok akibat transaksi.
+11   stock_adjustments    Penyesuaian stok manual oleh Admin.
+12   audit_logs           Riwayat aktivitas penting sistem.
+
+Tabel teknis Laravel:
+- migrations            Mencatat migration yang sudah dijalankan.
+- personal_access_tokens Disediakan Sanctum, tetapi belum dipakai oleh
+                         alur login web saat ini.
 
 3. TABEL users
 --------------
@@ -272,14 +294,6 @@ Contoh action:
 - review_approved
 - review_rejected
 
-15. TABEL QUEUE YANG DIHAPUS
-----------------------------
-Tabel `jobs` dan `failed_jobs` tidak digunakan oleh aplikasi lokal karena
-QUEUE_CONNECTION=sync. Migration berikut menghapus tabel tersebut jika masih
-ada dari instalasi sebelumnya:
-
-2026_11_22_000002_drop_unused_queue_tables.php
-
 16. RINGKASAN RELASI UTAMA
 --------------------------
 users 1 ----< transactions
@@ -294,8 +308,9 @@ transactions 1 ---- 1 anomalies
 transactions 1 ----< stock_movements >---- 1 products
 transactions 1 ----< audit_logs
 
-17. SUMBER DEFINISI SCHEMA
---------------------------
+
+SUMBER DEFINISI SCHEMA
+----------------------
 Schema dibuat oleh migration Laravel di:
 laravel-app/database/migrations/
 
@@ -305,3 +320,5 @@ Migration utama:
 - 2026_11_21_000001_create_stock_adjustments_table.php
 - 2026_11_22_000001_allow_multiple_box_scans.php
 - 2026_11_22_000002_drop_unused_queue_tables.php
+
+
