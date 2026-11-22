@@ -37,20 +37,10 @@ return new class extends Migration {
             $table->timestamp('created_at')->useCurrent();
         });
 
-        Schema::create('jobs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('queue')->index();
-            $table->longText('payload');
-            $table->unsignedTinyInteger('attempts');
-            $table->unsignedInteger('reserved_at')->nullable();
-            $table->unsignedInteger('available_at');
-            $table->unsignedInteger('created_at');
-        });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('jobs');
         Schema::dropIfExists('audit_logs');
         Schema::table('stock_movements', fn (Blueprint $table) => $table->dropUnique(['transaction_id', 'product_id']));
         Schema::table('anomalies', function (Blueprint $table) {

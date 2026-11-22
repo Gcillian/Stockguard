@@ -272,36 +272,15 @@ Contoh action:
 - review_approved
 - review_rejected
 
-15. TABEL jobs
---------------
-Fungsi: antrean pekerjaan Laravel jika QUEUE_CONNECTION=database.
+15. TABEL QUEUE YANG DIHAPUS
+----------------------------
+Tabel `jobs` dan `failed_jobs` tidak digunakan oleh aplikasi lokal karena
+QUEUE_CONNECTION=sync. Migration berikut menghapus tabel tersebut jika masih
+ada dari instalasi sebelumnya:
 
-Field:
-- id               : ID unik pekerjaan.
-- queue            : Nama antrean.
-- payload          : Data pekerjaan dalam format teks/JSON Laravel.
-- attempts         : Jumlah percobaan pekerjaan.
-- reserved_at      : Waktu pekerjaan diambil worker; boleh kosong.
-- available_at     : Waktu pekerjaan tersedia untuk diproses.
-- created_at       : Waktu pekerjaan dibuat.
+2026_11_22_000002_drop_unused_queue_tables.php
 
-Worker dijalankan dengan:
-php artisan queue:work --tries=3
-
-16. TABEL failed_jobs
----------------------
-Fungsi: menyimpan pekerjaan queue yang gagal diproses.
-
-Field:
-- id               : ID unik record kegagalan.
-- uuid             : ID unik pekerjaan gagal.
-- connection       : Nama koneksi queue.
-- queue            : Nama antrean.
-- payload          : Data pekerjaan yang gagal.
-- exception        : Detail error/stack trace.
-- failed_at        : Waktu pekerjaan gagal.
-
-17. RINGKASAN RELASI UTAMA
+16. RINGKASAN RELASI UTAMA
 --------------------------
 users 1 ----< transactions
 users 1 ----< stock_adjustments
@@ -315,7 +294,7 @@ transactions 1 ---- 1 anomalies
 transactions 1 ----< stock_movements >---- 1 products
 transactions 1 ----< audit_logs
 
-18. SUMBER DEFINISI SCHEMA
+17. SUMBER DEFINISI SCHEMA
 --------------------------
 Schema dibuat oleh migration Laravel di:
 laravel-app/database/migrations/
@@ -324,5 +303,5 @@ Migration utama:
 - 2026_10_25_000000_create_stockguard_tables.php
 - 2026_11_21_000001_add_verification_workflow.php
 - 2026_11_21_000001_create_stock_adjustments_table.php
-- 2026_11_21_000002_create_failed_jobs_table.php
 - 2026_11_22_000001_allow_multiple_box_scans.php
+- 2026_11_22_000002_drop_unused_queue_tables.php

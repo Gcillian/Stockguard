@@ -37,11 +37,7 @@ Pada detail transaksi Staff yang sudah selesai memindai seluruh SKU, tombol **De
 
 ## Job dan konfigurasi
 
-Secara default `QUEUE_CONNECTION=sync` sehingga analisis berjalan di request. Untuk pemrosesan asynchronous, atur `QUEUE_CONNECTION=database` dan jalankan worker di terminal lain:
-
-```powershell
-php artisan queue:work --tries=3
-```
+Secara default `QUEUE_CONNECTION=sync` sehingga analisis berjalan langsung di request. Tabel `jobs` dan `failed_jobs` tidak digunakan oleh konfigurasi lokal ini dan dihapus oleh migration `2026_11_22_000002_drop_unused_queue_tables.php`.
 
 `YOLO_CONFIDENCE_THRESHOLD=0.80` menetapkan ambang review. `YOLO_SERVICE_TOKEN` opsional tetapi sebaiknya diisi dengan nilai acak yang sama pada Laravel dan layanan Python. Service mengembalikan `detected_qty`, `confidence` (0–1), `bounding_boxes`, `sku`, dan `expected_qty`.
 
