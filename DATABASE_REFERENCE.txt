@@ -1,0 +1,328 @@
+﻿STOCKGUARD - DOKUMENTASI DATABASE
+================================
+
+Dokumen ini menjelaskan database Laravel StockGuard, tabel, field, relasi,
+dan fungsi setiap field.
+
+1. KONFIGURASI DATABASE
+------------------------
+Nama database lokal : stockguard_ai
+Driver              : MySQL
+Host                : 127.0.0.1
+Port                : 3306
+Username default    : root
+Password default    : kosong (sesuaikan dengan konfigurasi MySQL)
+
+Konfigurasi berada di file laravel-app/.env.
+
+2. ATURAN UMUM FIELD
+---------------------
+- id: primary key otomatis (big integer).
+- *_id: foreign key yang menunjuk ke id pada tabel lain.
+- created_at dan updated_at: waktu pembuatan dan perubahan data Laravel.
+- nullable: field boleh kosong.
+- unique: nilai tidak boleh sama dengan record lain.
+- cascadeOnDelete: data anak ikut dihapus jika data induk dihapus.
+- cascadeOnUpdate: perubahan id induk diteruskan ke data anak.
+
+3. TABEL users
+--------------
+Fungsi: menyimpan akun pengguna dan role akses aplikasi.
+
+Field:
+- id               : ID unik pengguna.
+- name             : Nama lengkap pengguna, maksimal 100 karakter.
+- email            : Email login; harus unik.
+- role             : Role pengguna. Nilai aplikasi: staff, supervisor, admin.
+- password         : Password yang sudah di-hash.
+- remember_token   : Token untuk fitur remember me saat login.
+- created_at       : Waktu akun dibuat.
+- updated_at       : Waktu akun terakhir diperbarui.
+
+Relasi:
+- Satu user dapat membuat banyak transactions.
+- Satu user dapat menjadi reviewer anomaly.
+- Satu user dapat membuat stock_adjustments dan audit_logs.
+
+4. TABEL warehouses
+-------------------
+Fungsi: menyimpan daftar gudang tempat transaksi dan kamera checkpoint berada.
+
+Field:
+- id               : ID unik gudang.
+- name             : Nama gudang, maksimal 100 karakter.
+- location         : Lokasi/alamat gudang.
+- created_at       : Waktu gudang dibuat.
+- updated_at       : Waktu gudang terakhir diperbarui.
+
+Relasi:
+- Satu warehouse memiliki banyak cameras.
+- Satu warehouse memiliki banyak transactions.
+
+5. TABEL products
+-----------------
+Fungsi: master data produk dan jumlah stok terkini.
+
+Field:
+- id               : ID unik produk.
+- sku              : Kode SKU produk, maksimal 50 karakter, harus unik.
+- barcode          : Barcode produk, maksimal 100 karakter, harus unik.
+- name             : Nama produk, maksimal 150 karakter.
+- stock            : Jumlah stok saat ini; default 0.
+- created_at       : Waktu produk dibuat.
+- updated_at       : Waktu data produk terakhir diperbarui.
+
+Relasi:
+- Satu product dapat muncul di banyak transaction_items.
+- Satu product dapat memiliki banyak scan_events.
+- Satu product dapat memiliki banyak vision_events.
+- Satu product dapat memiliki banyak stock_movements.
+- Satu product dapat memiliki banyak stock_adjustments.
+
+6. TABEL cameras
+----------------
+Fungsi: menyimpan kamera yang terpasang di gudang, terutama kamera pintu keluar.
+
+Field:
+- id               : ID unik kamera.
+- warehouse_id     : Gudang tempat kamera dipasang.
+- name             : Nama kamera, maksimal 100 karakter.
+- status           : Status kamera, maksimal 20 karakter, misalnya online/offline.
+
+Relasi:
+- Banyak cameras dimiliki satu warehouse.
+
+7. TABEL transactions
+---------------------
+Fungsi: header permintaan pengambilan barang dari gudang.
+
+Field:
+- id               : ID unik transaksi.
+- user_id          : Staff yang membuat permintaan.
+- warehouse_id     : Gudang asal barang.
+- status           : Status alur transaksi.
+                     Nilai yang digunakan: pending, submitted, scanned,
+                     verifying, completed, review, rejected.
+- created_at       : Waktu permintaan dibuat.
+- updated_at       : Waktu transaksi terakhir diperbarui.
+
+Relasi:
+- Banyak transactions dapat dibuat satu user.
+- Banyak transactions berasal dari satu warehouse.
+- Satu transaction memiliki banyak transaction_items.
+- Satu transaction memiliki banyak scan_events.
+- Satu transaction memiliki banyak vision_events.
+- Satu transaction memiliki maksimal satu anomaly.
+- Satu transaction memiliki banyak stock_movements.
+- Satu transaction memiliki banyak audit_logs.
+
+Alur status utama:
+submitted -> scanned -> verifying -> completed
+                              \-> review -> completed atau rejected
+
+8. TABEL transaction_items
+--------------------------
+Fungsi: detail produk dan jumlah box yang diminta dalam transaksi.
+
+Field:
+- id               : ID unik detail transaksi.
+- transaction_id   : Transaksi induk.
+- product_id       : Produk yang diminta.
+- quantity         : Jumlah box produk yang diminta.
+- created_at       : Waktu detail dibuat.
+- updated_at       : Waktu detail diperbarui.
+
+Relasi:
+- Banyak transaction_items dimiliki satu transaction.
+- Banyak transaction_items merujuk ke satu product.
+
+Catatan:
+- Satu SKU/barcode cukup dipindai satu kali untuk satu baris produk.
+- Nilai quantity digunakan untuk pemeriksaan jumlah fisik oleh kamera.
+
+9. TABEL scan_events
+--------------------
+Fungsi: mencatat hasil scan SKU/barcode oleh Staff.
+
+Field:
+- id               : ID unik event scan.
+- transaction_id   : Transaksi yang sedang dipindai.
+- product_id       : Produk yang berhasil dicocokkan.
+- scanned_code     : Nilai kode yang dimasukkan, berupa SKU atau barcode.
+- scanned_at       : Waktu scan dilakukan.
+
+Constraint dan index:
+- transaction_id + scanned_code harus unik.
+- Satu produk hanya boleh memiliki satu scan pada transaksi yang sama.
+- transaction_id memiliki index untuk mempercepat pencarian.
+
+Relasi:
+- Banyak scan_events dimiliki satu transaction.
+- Banyak scan_events merujuk ke satu product.
+
+Catatan:
+- Kode yang sama diberi peringatan dan tidak membuat anomaly.
+- Kode yang tidak termasuk dalam permintaan dapat membuat scan_mismatch.
+
+10. TABEL vision_events
+-----------------------
+Fungsi: menyimpan hasil pemeriksaan kamera checkpoint/YOLO.
+
+Field:
+- id               : ID unik hasil vision.
+- transaction_id   : Transaksi yang diperiksa.
+- product_id       : Produk yang diperiksa.
+- detected_qty     : Jumlah box yang terdeteksi kamera.
+- confidence       : Tingkat keyakinan deteksi, rentang 0 sampai 1.
+- evidence_path    : Lokasi file foto/frame bukti pada storage privat.
+- bounding_boxes   : JSON koordinat kotak deteksi objek.
+- source           : Sumber hasil, misalnya yolo atau demo_static_4box.
+- created_at       : Waktu hasil vision dibuat.
+- updated_at       : Waktu hasil vision diperbarui.
+
+Relasi:
+- Banyak vision_events dimiliki satu transaction.
+- Banyak vision_events merujuk ke satu product.
+
+Fungsi pemeriksaan:
+- Jika detected_qty berbeda dari quantity, transaksi masuk review.
+- Jika confidence di bawah YOLO_CONFIDENCE_THRESHOLD, transaksi masuk review.
+- Jika hasil sesuai, stok dapat dikurangi dan transaksi completed.
+
+11. TABEL anomalies
+-------------------
+Fungsi: menyimpan anomali yang membutuhkan pemeriksaan Supervisor/Admin.
+
+Field:
+- id               : ID unik anomali.
+- transaction_id   : Transaksi yang memiliki anomali.
+- type             : Jenis anomali, misalnya quantity_mismatch,
+                     low_confidence, scan_mismatch, insufficient_stock.
+- description      : Penjelasan detail anomali.
+- status           : Status anomaly, biasanya pending, approved, atau rejected.
+- reviewer_id      : User Supervisor/Admin yang memproses review; boleh kosong.
+- review_note      : Catatan keputusan review; boleh kosong saat pending.
+- reviewed_at      : Waktu review diproses; boleh kosong saat pending.
+- created_at       : Waktu anomaly dibuat.
+- updated_at       : Waktu anomaly diperbarui.
+
+Relasi:
+- Satu anomaly dimiliki satu transaction.
+- Satu anomaly dapat memiliki satu reviewer dari users.
+
+12. TABEL stock_movements
+-------------------------
+Fungsi: mencatat perubahan stok yang berasal dari transaksi pengambilan.
+
+Field:
+- id               : ID unik pergerakan stok.
+- product_id       : Produk yang stoknya berubah.
+- transaction_id   : Transaksi penyebab perubahan stok.
+- quantity         : Jumlah perubahan stok. Pengambilan disimpan sebagai nilai negatif.
+- created_at       : Waktu perubahan stok dicatat.
+- updated_at       : Waktu record diperbarui oleh Laravel.
+
+Constraint:
+- transaction_id + product_id harus unik agar stok tidak dikurangi dua kali
+  untuk produk yang sama pada transaksi yang sama.
+
+Relasi:
+- Banyak stock_movements merujuk ke satu product.
+- Banyak stock_movements merujuk ke satu transaction.
+
+13. TABEL stock_adjustments
+---------------------------
+Fungsi: mencatat penyesuaian stok manual yang dilakukan Admin.
+
+Field:
+- id               : ID unik penyesuaian.
+- product_id       : Produk yang stoknya disesuaikan.
+- user_id          : Admin yang melakukan penyesuaian.
+- quantity         : Selisih stok. Positif menambah, negatif mengurangi.
+- stock_after      : Nilai stok setelah penyesuaian.
+- reason           : Alasan penyesuaian, maksimal 500 karakter.
+- created_at       : Waktu penyesuaian dilakukan.
+
+Index:
+- product_id + created_at digunakan untuk histori stok produk.
+
+Relasi:
+- Banyak stock_adjustments merujuk ke satu product.
+- Banyak stock_adjustments dibuat oleh satu user.
+
+14. TABEL audit_logs
+--------------------
+Fungsi: menyimpan jejak aktivitas penting untuk audit operasional.
+
+Field:
+- id               : ID unik audit log.
+- transaction_id   : Transaksi terkait; boleh kosong untuk aktivitas umum.
+- user_id          : User yang melakukan aktivitas; boleh kosong.
+- action           : Nama aktivitas, maksimal 60 karakter.
+- details          : Detail tambahan dalam format JSON.
+- created_at       : Waktu aktivitas dicatat.
+
+Contoh action:
+- submitted
+- item_scanned
+- scan_mismatch
+- vision_result
+- pending_review
+- completed
+- review_approved
+- review_rejected
+
+15. TABEL jobs
+--------------
+Fungsi: antrean pekerjaan Laravel jika QUEUE_CONNECTION=database.
+
+Field:
+- id               : ID unik pekerjaan.
+- queue            : Nama antrean.
+- payload          : Data pekerjaan dalam format teks/JSON Laravel.
+- attempts         : Jumlah percobaan pekerjaan.
+- reserved_at      : Waktu pekerjaan diambil worker; boleh kosong.
+- available_at     : Waktu pekerjaan tersedia untuk diproses.
+- created_at       : Waktu pekerjaan dibuat.
+
+Worker dijalankan dengan:
+php artisan queue:work --tries=3
+
+16. TABEL failed_jobs
+---------------------
+Fungsi: menyimpan pekerjaan queue yang gagal diproses.
+
+Field:
+- id               : ID unik record kegagalan.
+- uuid             : ID unik pekerjaan gagal.
+- connection       : Nama koneksi queue.
+- queue            : Nama antrean.
+- payload          : Data pekerjaan yang gagal.
+- exception        : Detail error/stack trace.
+- failed_at        : Waktu pekerjaan gagal.
+
+17. RINGKASAN RELASI UTAMA
+--------------------------
+users 1 ----< transactions
+users 1 ----< stock_adjustments
+users 1 ----< audit_logs
+warehouses 1 ----< cameras
+warehouses 1 ----< transactions
+transactions 1 ----< transaction_items >---- 1 products
+transactions 1 ----< scan_events >---- 1 products
+transactions 1 ----< vision_events >---- 1 products
+transactions 1 ---- 1 anomalies
+transactions 1 ----< stock_movements >---- 1 products
+transactions 1 ----< audit_logs
+
+18. SUMBER DEFINISI SCHEMA
+--------------------------
+Schema dibuat oleh migration Laravel di:
+laravel-app/database/migrations/
+
+Migration utama:
+- 2026_10_25_000000_create_stockguard_tables.php
+- 2026_11_21_000001_add_verification_workflow.php
+- 2026_11_21_000001_create_stock_adjustments_table.php
+- 2026_11_21_000002_create_failed_jobs_table.php
+- 2026_11_22_000001_allow_multiple_box_scans.php
