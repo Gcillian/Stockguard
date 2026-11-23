@@ -1,4 +1,4 @@
-﻿<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1320" viewBox="0 0 1800 1320">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1320" viewBox="0 0 1800 1320">
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L10,5 L0,10 Z" fill="#21404b"/>
@@ -61,6 +61,13 @@
   <text x="148" y="1060" text-anchor="middle" class="left">INFRASTRUKTUR</text>
   <text x="148" y="1095" text-anchor="middle" class="tiny">server lokal / deployment</text>
 
+  <!-- side connectors -->
+  <path d="M261 180 H295" class="lineLight"/>
+  <path d="M261 395 H295" class="lineLight"/>
+  <path d="M261 645 H295" class="lineLight"/>
+  <path d="M261 875 H295" class="lineLight"/>
+  <path d="M261 1110 H295" class="lineLight"/>
+
   <!-- layer 1 -->
   <rect x="295" y="115" width="1465" height="130" rx="20" class="dash"/>
   <text x="1027" y="151" text-anchor="middle" class="section">Pengguna &amp; Perangkat Akses</text>
@@ -76,6 +83,10 @@
   <!-- layer 2 app -->
   <rect x="295" y="270" width="1465" height="250" rx="20" class="dash"/>
   <text x="1027" y="307" text-anchor="middle" class="section">Aplikasi Web Laravel</text>
+  <!-- arrows are placed before destination boxes -->
+  <path d="M545 221 V335" class="line"/>
+  <path d="M925 221 V335" class="line"/>
+  <path d="M1320 221 V335" class="line"/>
   <rect x="355" y="335" width="315" height="135" rx="14" fill="#e5f8f5" class="stroke" filter="url(#shadow)"/>
   <text x="512" y="369" text-anchor="middle" class="boxTitle">UI StockGuard</text>
   <text x="512" y="396" text-anchor="middle" class="boxText">Blade · CSS · JavaScript</text>
@@ -96,6 +107,13 @@
   <!-- layer 3 services -->
   <rect x="295" y="545" width="1465" height="205" rx="20" class="dash"/>
   <text x="1027" y="582" text-anchor="middle" class="section">Layanan Verifikasi dan Operasional</text>
+  <path d="M512 470 V612" class="lineLight"/>
+  <path d="M887 470 V612" class="lineLight"/>
+  <path d="M1262 470 V612" class="lineLight"/>
+  <path d="M1590 470 V612" class="lineLight"/>
+  <path d="M655 660 H700" class="lineLight"/>
+  <path d="M1000 660 H1045" class="lineLight"/>
+  <path d="M1345 660 H1390" class="lineLight"/>
   <rect x="355" y="612" width="300" height="96" rx="12" fill="#fff9e9" class="stroke"/>
   <text x="505" y="648" text-anchor="middle" class="boxTitle">Scan Service</text>
   <text x="505" y="675" text-anchor="middle" class="boxText">SKU / barcode matching</text>
@@ -112,6 +130,10 @@
   <!-- layer 4 data -->
   <rect x="295" y="775" width="1465" height="210" rx="20" class="dash"/>
   <text x="1027" y="812" text-anchor="middle" class="section">Data dan Bukti</text>
+  <path d="M505 708 V845" class="line"/>
+  <path d="M850 708 V845" class="line"/>
+  <path d="M1195 708 V845" class="line"/>
+  <path d="M1545 708 V845" class="line"/>
   <rect x="355" y="845" width="560" height="95" rx="12" fill="#eef5ff" class="stroke"/>
   <text x="635" y="880" text-anchor="middle" class="boxTitle">MySQL · stockguard_ai</text>
   <text x="635" y="907" text-anchor="middle" class="boxText">users · products · transactions · scan_events</text>
@@ -126,6 +148,9 @@
   <!-- layer 5 infra -->
   <rect x="295" y="1010" width="1465" height="220" rx="20" class="dash"/>
   <text x="1027" y="1047" text-anchor="middle" class="section">Infrastruktur dan Integrasi</text>
+  <path d="M635 940 V1080" class="line"/>
+  <path d="M1140 940 V1080" class="line"/>
+  <path d="M1532 940 V1080" class="line"/>
   <rect x="355" y="1080" width="280" height="92" rx="12" fill="#d9f8eb" class="stroke"/>
   <text x="495" y="1116" text-anchor="middle" class="boxTitle">PHP 8 + Laravel 9</text>
   <text x="495" y="1143" text-anchor="middle" class="boxText">Web server aplikasi</text>
@@ -138,32 +163,6 @@
   <rect x="1390" y="1080" width="310" height="92" rx="12" fill="#d9f8eb" class="stroke"/>
   <text x="1545" y="1116" text-anchor="middle" class="boxTitle">Vision Service / YOLO</text>
   <text x="1545" y="1143" text-anchor="middle" class="boxText">opsional; demo memakai static image</text>
-
-  <!-- flow arrows -->
-  <path d="M545 221 V335" class="line"/>
-  <path d="M925 221 V335" class="line"/>
-  <path d="M1320 221 V335" class="line"/>
-  <path d="M512 470 V612" class="lineLight"/>
-  <path d="M887 470 V612" class="lineLight"/>
-  <path d="M1262 470 V612" class="lineLight"/>
-  <path d="M1590 470 V612" class="lineLight"/>
-  <path d="M505 708 V845" class="line"/>
-  <path d="M850 708 V845" class="line"/>
-  <path d="M1195 708 V845" class="line"/>
-  <path d="M1545 708 V845" class="line"/>
-  <path d="M635 940 V1080" class="line"/>
-  <path d="M1140 940 V1080" class="line"/>
-  <path d="M1532 940 V1080" class="line"/>
-  <path d="M655 660 H700" class="lineLight"/>
-  <path d="M1000 660 H1045" class="lineLight"/>
-  <path d="M1345 660 H1390" class="lineLight"/>
-
-  <!-- side connectors -->
-  <path d="M261 180 H295" class="lineLight"/>
-  <path d="M261 395 H295" class="lineLight"/>
-  <path d="M261 645 H295" class="lineLight"/>
-  <path d="M261 875 H295" class="lineLight"/>
-  <path d="M261 1110 H295" class="lineLight"/>
 
   <!-- legend -->
   <rect x="1350" y="22" width="410" height="60" rx="12" fill="#f0f6f7" stroke="#d4e1e4"/>
